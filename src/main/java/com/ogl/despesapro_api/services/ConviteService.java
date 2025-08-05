@@ -17,7 +17,15 @@ public class ConviteService {
         return conviteRepository.findByToken(token);
     }
 
+    public Convite findByTokenDef(String token) {
+        return conviteRepository.findByToken(token).orElse(null);
+    }
+
     public Optional<Convite> findValidoByColaborador(Usuario colaborador) {
         return conviteRepository.findValidoByColaborador(colaborador.getId());
+    }
+
+    public void salvar(Convite convite) {
+        conviteRepository.save(convite);
     }
 }

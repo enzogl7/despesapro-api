@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ConviteRepository extends JpaRepository<Convite, Long> {
     Optional<Convite> findByToken(String token);
 
-    @Query(value = "select * from convite where colaborador_id = :colaboradorId and expira_em > current_timestamp", nativeQuery = true)
+    @Query(value = "select * from convite where colaborador_id = :colaboradorId and expira_em > current_timestamp and usado = false", nativeQuery = true)
     Optional<Convite> findValidoByColaborador(@Param("colaboradorId") String colaboradorId);
 
 }

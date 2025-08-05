@@ -25,7 +25,6 @@ import java.util.UUID;
 public class ColaboradorController {
 
     private final UsuarioService usuarioService;
-    private final ConviteRepository conviteRepository;
     private final ConviteService conviteService;
 
     @PostMapping("/gerar-convite")
@@ -39,7 +38,6 @@ public class ColaboradorController {
         Optional<Convite> colaboradorJaConvidado = conviteService.findValidoByColaborador(usuarioColaborador);
         if (colaboradorJaConvidado.isPresent()) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
-
         Convite convite = new Convite();
 
         convite.setToken(UUID.randomUUID().toString());
@@ -48,7 +46,7 @@ public class ColaboradorController {
         convite.setUsado(false);
         convite.setGestor(usuarioGestor);
         convite.setColaborador(usuarioColaborador);
-        conviteRepository.save(convite);
+        conviteService.salvar(convite);
 
         return ResponseEntity.ok().body(Map.of("token", convite.getToken()));
     }
