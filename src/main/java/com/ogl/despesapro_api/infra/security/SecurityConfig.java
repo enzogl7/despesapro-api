@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/convite/validar/**").permitAll()
                         .requestMatchers("/api/gestor/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

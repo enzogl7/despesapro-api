@@ -24,4 +24,7 @@ public class Convite {
     @ManyToOne
     private Usuario gestor;
 
+    @ManyToOne
+    private Usuario colaborador;
+
 }
