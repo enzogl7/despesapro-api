@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -23,4 +25,9 @@ public class Colaborador {
 
     @OneToOne
     private Convite conviteAceito;
+
+    private LocalDateTime criadoEm;
+
+    @Column(name = "ativo")
+    private boolean ativo;
 }

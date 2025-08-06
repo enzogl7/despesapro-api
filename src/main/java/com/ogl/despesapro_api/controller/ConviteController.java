@@ -2,11 +2,13 @@ package com.ogl.despesapro_api.controller;
 
 import com.ogl.despesapro_api.model.Colaborador;
 import com.ogl.despesapro_api.model.Convite;
+import com.ogl.despesapro_api.model.Usuario;
 import com.ogl.despesapro_api.services.ColaboradorService;
 import com.ogl.despesapro_api.services.ConviteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -22,7 +24,7 @@ public class ConviteController {
     private final ColaboradorService colaboradorService;
 
     @GetMapping("/validar/{token}")
-    public ResponseEntity<?> verificarConvite(@PathVariable String token) {
+    public ResponseEntity<?> verificarConvite(@PathVariable String token, @AuthenticationPrincipal Usuario usuario) {
         Optional<Convite> conviteOpt = conviteService.findByToken(token);
         if (conviteOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Convite não encontrado");
@@ -33,6 +35,8 @@ public class ConviteController {
         if (convite.isUsado() || convite.getExpiraEm().isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.GONE).body("Convite expirado ou já utilizado");
         }
+
+        if (!usuario.getEmail().equals(convite.getColaborador().getEmail())) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Este convite pertence a outro colaborador.");
 
         Colaborador colaborador = colaboradorService.findByUsuarioDef(convite.getColaborador());
         String gestorAtualColaborador = "";
@@ -60,6 +64,8 @@ public class ConviteController {
                 colaboradorNovo.setUsuario(convite.getColaborador());
                 colaboradorNovo.setGestor(convite.getGestor());
                 colaboradorNovo.setConviteAceito(convite);
+                colaboradorNovo.setCriadoEm(LocalDateTime.now());
+                colaboradorNovo.setAtivo(true);
                 colaboradorService.salvar(colaboradorNovo);
             } else {
                 colaborador.get().setConviteAceito(convite);

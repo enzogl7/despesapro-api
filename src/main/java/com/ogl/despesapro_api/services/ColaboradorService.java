@@ -6,6 +6,7 @@ import com.ogl.despesapro_api.repositories.ColaboradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,5 +24,9 @@ public class ColaboradorService {
 
     public Colaborador findByUsuarioDef(Usuario usuario) {
         return colaboradorRepository.findByUsuario(usuario).orElse(null);
+    }
+
+    public List<Colaborador> findAllByGestor(Usuario usuario) {
+        return colaboradorRepository.findAllByGestor(usuario.getId());
     }
 }
