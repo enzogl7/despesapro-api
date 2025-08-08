@@ -29,4 +29,8 @@ public class ColaboradorService {
     public List<Colaborador> findAllByGestor(Usuario usuario) {
         return colaboradorRepository.findAllByGestor(usuario.getId());
     }
+
+    public Colaborador findById(String id) {
+        return colaboradorRepository.findById(id).orElse(null);
+    }
 }

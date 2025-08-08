@@ -64,6 +64,8 @@ public class ColaboradorController {
                 .map(colaborador -> {
                     ColaboradorResponseDTO dto = new ColaboradorResponseDTO();
                     dto.setId(colaborador.getId());
+                    dto.setCargo(colaborador.getCargo());
+                    dto.setTelefone(colaborador.getTelefone());
 
                     UsuarioSimplesDTO usuarioDTO = new UsuarioSimplesDTO();
                     usuarioDTO.setId(colaborador.getUsuario().getId());
@@ -79,5 +81,35 @@ public class ColaboradorController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(respostaDTO);
+    }
+
+    @PutMapping("/editar")
+    public ResponseEntity<?> editarColaborador(@RequestBody ColaboradorResponseDTO dto) {
+        try {
+            Colaborador colaborador = colaboradorService.findById(dto.getId());
+            if (colaborador == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+            colaborador.setCargo(dto.getCargo());
+            colaborador.setTelefone(dto.getTelefone());
+            colaborador.setAtivo(dto.isAtivo());
+            colaboradorService.salvar(colaborador);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/remover/{idColaborador}")
+    public ResponseEntity<?> removerColaborador(@PathVariable String idColaborador) {
+        try {
+            Colaborador colaborador = colaboradorService.findById(idColaborador);
+            colaborador.setGestor(null);
+            colaboradorService.salvar(colaborador);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

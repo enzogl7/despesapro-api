@@ -30,4 +30,8 @@ public class Colaborador {
 
     @Column(name = "ativo")
     private boolean ativo;
+
+    private String cargo;
+
+    private String telefone;
 }

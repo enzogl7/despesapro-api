@@ -10,7 +10,7 @@ public class ColaboradorResponseDTO {
     private String id;
     private UsuarioSimplesDTO usuario;
     private LocalDateTime criadoEm;
-    private String cargo = "";
-    private String telefone = "";
+    private String cargo;
+    private String telefone;
     private boolean ativo;
 }

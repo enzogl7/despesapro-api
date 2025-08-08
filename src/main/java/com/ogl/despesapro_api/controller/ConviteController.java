@@ -40,7 +40,7 @@ public class ConviteController {
 
         Colaborador colaborador = colaboradorService.findByUsuarioDef(convite.getColaborador());
         String gestorAtualColaborador = "";
-        if (colaborador != null) gestorAtualColaborador = colaborador.getGestor().getNome();
+        if (colaborador != null && colaborador.getGestor() != null) gestorAtualColaborador = colaborador.getGestor().getNome();
 
         Map<String, Object> resposta = Map.of(
                 "nomeGestor", convite.getGestor().getNome(),
